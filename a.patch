@@ -1,0 +1,30 @@
+cat > a.patch <<'PATCH'
+--- a/app/services/llm_service.py
++++ b/app/services/llm_service.py
+@@ -13,5 +13,27 @@
+ IMPORTANT: Return your response in valid JSON format.
+ Your response must contain a JSON object with a "findings" array.
+ Do not include Markdown or explanations outside the JSON.
+ 
++STRICT OUTPUT STRUCTURE:
++Every finding MUST contain exactly these three fields:
++- sign_id: one of the approved sign IDs.
++- value: "yes", "no", or "not_sure".
++- quote: the exact supporting text from the farmer's message.
++
++Use this JSON structure:
++{
++  "findings": [
++    {
++      "sign_id": "reduced_appetite",
++      "value": "yes",
++      "quote": "not eating properly"
++    }
++  ]
++}
++
++Do not use alternative field names such as "sign", "symptom",
++"status", or "answer".
++Never omit sign_id, value, or quote.
++
+ You are a livestock symptom extraction assistant.
